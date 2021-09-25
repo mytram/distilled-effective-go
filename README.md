@@ -127,11 +127,42 @@ for key, value := range map {
 
 ## The blank identifier
 
+- `_` is known as the blank identifier
+
 ### The blank identifier in multiple assignment
+
+- When a value is not used, e.g.
+
+```go
+for _, value := range array {
+    // the index is not used
+}
+```
 
 ### Unused imports and variables
 
+- Use `_` to silence unused imports
+
+```go
+import (
+    "fmt"
+)
+
+var _ = fmt.Printf
+
+_ = fd
+
+```
+
 ### Import for side effect
+
+- For example, import a database driver
+
+```go
+import (
+    _ "github.com/go-sql-driver/mysql"
+)
+```
 
 ### Interface checks
 
