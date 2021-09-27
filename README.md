@@ -143,6 +143,8 @@ func foo() {
 
 ### Pointers vs. Values
 
+- This is a pecularity: When the value is addressable, the language takes care of the common case of invoking a pointer method on a value by inserting the address operator automatically.
+
 ## Interfaces and other types
 
 ### Interfaces
