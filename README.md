@@ -77,9 +77,39 @@ for key, value := range map {
 
 ### Multiple return values
 
+- `func (file *File) Write(b []byte) (n int, err error)`
+
 ### Named result parameters
 
+- Named result parameters are initialized to the zero values when the function begins.
+
+- A return statement with no arguments returns, also known as unadorned return statement, the current values of the result parameters.
+
 ### Defer
+
+- Defferred function calls are executed immediately before the enclosing function returns
+
+- The arguments of a defer function is evaluated immediately, i.e. any variables of the enclosing scope will have the values when the `defer` function is called, when the deferrd functions are executed.
+
+```go
+
+func foo() {
+    i := 1
+
+    defer fmt.Println(i)
+
+    i := 10
+}
+
+# print 1 instead of 10
+
+```
+
+- Deferred functions are called in LIFO order
+
+- Deferring a call to a function such as Close has two advantages. First, it guarantees that you will never forget to close the file, a mistake that's easy to make if you later edit the function to add a new return path. Second, it means that the close sits near the open, which is much clearer than placing it at the end of the function. - I find these are not convincing.
+
+- TODO: For programmers accustomed to block-level resource management from other languages, defer may seem peculiar, but its most interesting and powerful applications come precisely from the fact that it's not block-based but function-based. In the section on panic and recover we'll see another example of its possibilities.
 
 ## Data
 
@@ -165,6 +195,8 @@ import (
 ```
 
 ### Interface checks
+
+- TODO: to be distilled after interfaces and type conversions
 
 ## Embedding
 
