@@ -202,6 +202,59 @@ import (
 
 ## Embedding
 
+- An interface is a union of its embedded interfaces
+- Only interfaces can be embedded within interfaces
+- Embedding struct
+
+```go
+// ReadWriter stores pointers to a Reader and a Writer.
+// It implements io.ReadWriter.
+type ReadWriter struct {
+    *Reader  // *bufio.Reader
+    *Writer  // *bufio.Writer
+}
+```
+
+- When we embed a type, the methods of that type become methods of the outer type, but when they are invoked the receiver of the method is the inner type, not the outer one. In the example above,
+
+```go
+    rw := &ReadWriter{&Reader{...}, &Writer{...}}
+
+    rw.Read(...) // is the same as rw.Reader.Read(...)
+
+    // But the caller of Read() is rw.Reader
+    rw.Write(...) // is the same as rw.Writer.Write(...)
+    // Similarly, the caller of Write() is rw.Writer
+```
+
+- However, the promoted field name cannot be used in literal initailisers. The following is illegal:
+
+```go
+type base struct {
+    ID int
+}
+
+type User struct {
+    *base
+    Name string
+}
+
+u := &User{ID: 1, Name: "J"} // No! After all, embedding only adds a field called base to User
+```
+
+- If we need to refer to an embedded field directly, the type name of the field, ignoring the package qualifier, serves as a field name. For example,
+
+```go
+    // we could do
+    rw.Reader.Read(...)
+```
+
+- Naming conflicts
+
+  - A field or method X hides any other item X in a more deeply nested part of the type
+  - The same name appears at the same nesting level, it is usually an error to
+    refer to it without using the implicit field name
+
 ## Concurrency
 
 ### Share by communicating
